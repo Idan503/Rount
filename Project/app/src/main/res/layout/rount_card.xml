@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginStart="45dp"
+    android:layout_marginEnd="45dp"
+    android:layout_height="80dp">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/rount_card_background"
+        android:elevation="0dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:text="@string/rount_name"
+        android:textSize="24sp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="30dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:text="@string/rount_example_stats"
+        android:textSize="24sp"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMaxTextSize="24sp"
+        android:autoSizeMinTextSize="16sp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="30dp"
+        />
+
+    <!-- This should be the logo of the stats tab-->
+    <View
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:background="@android:color/darker_gray"
+        />
+
+
+
+</RelativeLayout>

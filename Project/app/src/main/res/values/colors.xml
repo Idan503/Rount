@@ -3,4 +3,14 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+
+    <color name="backgroundLight">#C3C1C7</color>
+    <color name="backgroundDark">#2B2B2B</color>
+
+
+    <!--Pink Layout-->
+    <color name="primaryPink">#FF4242</color>
+    <color name="primaryPinkLight">#FBA39E</color>
+    <color name="secondaryPinkLight">#E7E6EC</color>
+    <color name="secondaryPinkDark">#1A1A1A</color>
 </resources>
