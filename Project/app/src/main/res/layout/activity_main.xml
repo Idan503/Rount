@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<RelativeLayout xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     tools:context=".MainActivity">
     <!-- Using relative layout to place navigation bar at bottom -->
@@ -26,6 +27,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:id="@+id/start_button"
             android:background="@drawable/start_button_background"
             android:elevation="1dp" />
 
@@ -106,34 +108,20 @@
                 android:layout_height="25dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="25dp"
+                android:id="@+id/info_button"
                 android:background="@drawable/info_button_background"
                 android:text="@string/question_mark" />
+
 
 
         </LinearLayout>
 
 
-        <!-- Slide card-view for showing Rounts -->
-        <ScrollView
+
+        <com.idan_koren_israeli.rount.ScrollSnapper
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="30dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:orientation="vertical">
-
-                <!-- Inflated layout of rount card -->
-                <include layout="@layout/rount_card" />
-
-            </LinearLayout>
-
-
-        </ScrollView>
-
+            android:layout_marginBottom="100dp"/>
 
     </LinearLayout>
 
