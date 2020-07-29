@@ -14,15 +14,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:weightSum="1"
         >
 
     <!--Button: Start Rount -->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:layout_marginLeft="40dp"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="70dp"
-        android:layout_marginRight="40dp">
+        android:layout_marginRight="30dp">
 
         <Button
             android:layout_width="match_parent"
@@ -82,8 +84,9 @@
     <!--My Rounts menu-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_marginTop="30dp"
+        android:layout_weight="0.7"
         android:orientation="vertical">
 
         <LinearLayout
@@ -104,12 +107,13 @@
 
 
             <Button
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="25dp"
                 android:id="@+id/info_button"
                 android:background="@drawable/info_button_background"
+                android:textSize="18sp"
                 android:text="@string/question_mark" />
 
 
