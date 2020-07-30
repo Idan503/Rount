@@ -33,7 +33,7 @@
     <TextView
         app:layout_constraintStart_toEndOf="@id/invisible_start"
         app:layout_constraintTop_toBottomOf="@id/invisible_text_top"
-        app:layout_constraintBottom_toTopOf="@+id/rount_stats"
+        app:layout_constraintBottom_toTopOf="@+id/stats_text"
         android:gravity="center_vertical"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -41,7 +41,7 @@
         app:layout_constraintWidth_percent="0.5"
         android:lines="1"
         android:layout_marginStart="5dp"
-        android:id="@+id/rount_name_text"
+        android:id="@+id/name_text"
         android:text="@string/rount_name"
         android:autoSizeTextType="uniform"
         android:autoSizeMinTextSize="12sp"
@@ -54,7 +54,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintStart_toEndOf="@id/invisible_start"
-        app:layout_constraintTop_toBottomOf="@id/rount_name_text"
+        app:layout_constraintTop_toBottomOf="@id/name_text"
         app:layout_constraintBottom_toBottomOf="@id/invisible_text_bottom"
         app:layout_constraintHeight_percent="0.4"
         app:layout_constraintWidth_percent="0.6"
@@ -65,7 +65,7 @@
         android:autoSizeTextType="uniform"
         android:autoSizeMaxTextSize="20sp"
         android:autoSizeMinTextSize="16sp"
-        android:id="@+id/rount_stats"
+        android:id="@+id/stats_text"
         />
 
     <View

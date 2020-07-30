@@ -13,20 +13,22 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import java.util.ArrayList;
+
 //This is a custom view for Rount selection on main menu
 
 class ScrollSnapper extends ScrollView
 {
 
-
     final float CARD_MAX_SIZE_MULT = 1.1f;
     final float CARD_MIN_SIZE_MULT = 0.8f;
-    int[] startSize = new int[2];
     int[] anchorPos = new int[2]; //Cordintes where the card should be the biggest.
     int[] childPos = new int[2]; //this array will store x,y values of children
     boolean firstRender = true; //Flag for detecting first frame that is being drawn
     LinearLayout parent;
-    //ArrayList<RountCards> ...
+
+    ArrayList<RountCard> rountCards = new ArrayList<>();
+    // All cards inflated will be saved as objects
 
     static int counter = 0;
     public ScrollSnapper(Context context){
@@ -45,20 +47,19 @@ class ScrollSnapper extends ScrollView
     }
 
     private void init(Context context) {
-
-
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.scroll_snapper,this); // Adding scroll snapper view
         parent = findViewById(R.id.rount_cards_layout); //Getting the parent of the rount cards
 
 
         for(int i=0;i<10;i++)
-                inflater.inflate(R.layout.rount_card,parent); //Adding cards one by one
-        //Adding them to the arraylist of cards
+        {
+            View newCard = inflater.inflate(R.layout.rount_card,parent,false); //Adding cards one by one
+            parent.addView(newCard); // Setting new cards as children of the parent layout
+            rountCards.add(new RountCard(newCard,context));
+        }
 
-        startSize[0] = parent.getChildAt(0).getLayoutParams().width;
-        startSize[1] = parent.getChildAt(0).getLayoutParams().height;
-        //Picking an example before changing sizes in order to have a constant starting value
+
 
     }
 
@@ -66,66 +67,21 @@ class ScrollSnapper extends ScrollView
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        //Getting the top child position which will be the place for the biggest card (anchor)
+        // Getting the top child position which will be the place for the biggest card (anchor)
         if(firstRender){
             parent.getChildAt(0).getLocationOnScreen(anchorPos);
             firstRender = !firstRender;
         }
 
-        //Each child will be resized
-        for(int i=0;i<10;i++){
-            drawCard(parent.getChildAt(i));
-
+        for(RountCard rountCard : rountCards){
+            if(rountCard.getCard()==parent.getChildAt(0))
+                System.out.println("Wow is " + getChildSelectedPercent(rountCard.getCard()));
+            rountCard.update(getChildSelectedPercent(rountCard.getCard()));
         }
 
-
-
-
-    }
-
-    //This function should get a rountcard object maybe
-    private void drawCard(View child){
-        child.getLocationOnScreen(childPos); //this function changes the array
-
-
-
-
-        //Childs that are close to anchor point should be bigger
-        float distanceFromAnchor = (verticalDistance(childPos,anchorPos) / anchorPos[1]);
-        float sizeMultiplier = Math.max(CARD_MIN_SIZE_MULT, CARD_MAX_SIZE_MULT - distanceFromAnchor);
-        float foremostPercent = ((sizeMultiplier - CARD_MIN_SIZE_MULT) / (CARD_MAX_SIZE_MULT - CARD_MIN_SIZE_MULT)); // 1 for current choose
-
-        TextView statsText =  child.findViewById(R.id.rount_stats); //This should not be called every frame..
-        int textAlpha = Math.max(0,(int)(foremostPercent * 255));
-        statsText.setTextColor(Color.argb(textAlpha,127,0,127));
-        resizeCard(child, (int) (startSize[0] * sizeMultiplier),(int)(startSize[1] * sizeMultiplier));
-        resizeInnerText(statsText, foremostPercent);
     }
 
 
-
-    //**All those function should get the card object and perform changes on it:::
-
-    //**
-    private void resizeCard(View card, int width, int height){
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) card.getLayoutParams();
-        params.width = width;
-        params.height = height;
-        card.setLayoutParams(params);
-    }
-
-    //**
-    private void resizeInnerText(View card, float percent){
-        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) card.getLayoutParams();
-        params.matchConstraintPercentHeight = (0.4f * percent); //the 0.4 should come from the different object
-
-        card.setLayoutParams(params);
-    }
-
-    //**
-    private void setInnerTextOpacity(View card, float percent){
-
-    }
 
     //This function calculates distance between 2 vectors represented as two [2] arrays
     private float distance(int[] v1, int[] v2){
@@ -139,8 +95,16 @@ class ScrollSnapper extends ScrollView
         return (float) Math.sqrt(ySquared);
     }
 
+    // Selected percent is a number between 0 and 1 - selected card should be the biggest and it will get 1.
+    // While unselected card which is not close to the anchor position, should be smaller - will get 0.
+    public float getChildSelectedPercent(View child){
+        child.getLocationOnScreen(childPos); //this function manipulates the array
 
-
+        // Children that are close to anchor point should be bigger -> result should be closer to 1
+        float distanceFromAnchor = (verticalDistance(childPos,anchorPos) / anchorPos[1]);
+        float sizeMultiplier = Math.max(CARD_MIN_SIZE_MULT, CARD_MAX_SIZE_MULT - distanceFromAnchor); // How much should we scale the card
+        return ((sizeMultiplier - CARD_MIN_SIZE_MULT) / (CARD_MAX_SIZE_MULT - CARD_MIN_SIZE_MULT)); // ratio is 1 for fully selected
+    }
 
 
 
