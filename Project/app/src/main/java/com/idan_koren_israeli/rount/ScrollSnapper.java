@@ -1,49 +1,43 @@
 package com.idan_koren_israeli.rount;
 
-import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.ScaleDrawable;
-import android.os.CountDownTimer;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-//This is a custom view for Rount selection on main menu
-
+// This is a custom view for Rount selection on main menu
+// The idea is that there will always be only one selected card at a time
+// This card will be bigger then the others, and will be placed at a specific point (anchor position)
 class ScrollSnapper extends ScrollView
 {
 
-    final float CARD_MAX_SIZE_MULT = 1.1f;
-    final float CARD_MIN_SIZE_MULT = 0.85f;
-    int[] anchorPos = new int[2]; //Cordintes where the card should be the biggest.
-    int[] childPos = new int[2]; //this array will store x,y values of children
-    boolean firstRender = true; //Flag for detecting first frame that is being drawn
-    LinearLayout parent;
+    private final float CARD_MAX_SIZE_MULT = 1.1f;
+    private final float CARD_MIN_SIZE_MULT = 0.85f;
+    private int[] anchorPos = new int[2]; //Cordintes where the card should be the biggest.
+    private int[] childPos = new int[2]; //this array will store x,y values of children
+    private boolean firstRender = true; //Flag for detecting first frame that is being drawn
+    private LinearLayout parent;
 
     // Using this timer to detect when user scroll is finished
-    Timer ntimer = new Timer();
-    MotionEvent event;
-    boolean isSnapping = false;
-    int targetSnapY = 0;
+    private Timer ntimer = new Timer();
+    private MotionEvent event;
+    private boolean isSnapping = false;
+    private int targetSnapY = 0;
 
-    RountCard currentSelected = null;
-    ArrayList<RountCard> rountCards = new ArrayList<>();
+    private RountCard currentSelected = null;
+    private ArrayList<RountCard> rountCards = new ArrayList<>();
     // All cards inflated will be saved as objects
 
-    static int counter = 0;
     public ScrollSnapper(Context context){
         super(context);
         init(context);
@@ -86,6 +80,7 @@ class ScrollSnapper extends ScrollView
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        int viewCount = 0;
         // Getting the top child position which will be the place for the biggest card (anchor)
         if(firstRender){
             parent.getChildAt(0).getLocationOnScreen(anchorPos);
@@ -93,36 +88,30 @@ class ScrollSnapper extends ScrollView
         }
 
         for(RountCard rountCard : rountCards){
-            float newPercentValue = getChildSelectedPercent(rountCard.getCard());
-            rountCard.update(getChildSelectedPercent(rountCard.getCard()));
-            if(rountCard!=currentSelected && newPercentValue >  currentSelected.getSelectedPercent()) {
-                //We have a new selected card.
-                currentSelected = rountCard;
+            // In order to improve performance - iterating rendered cards only
+            if(isVisible(rountCard.getCard())) {
+                float newPercentValue = getChildSelectedPercent(rountCard.getCard());
+                rountCard.update(getChildSelectedPercent(rountCard.getCard()));
+                if (rountCard != currentSelected && newPercentValue > currentSelected.getSelectedPercent()) {
+                    //Old selected card is now replaced by the new one which is bigger
+                    currentSelected = rountCard;
+                }
             }
         }
-
-        for(RountCard card : rountCards){
-            if(card==currentSelected)
-                card.getRountName().setText("Selected!");
-            else
-                card.getRountName().setText("Not Selected!");
-        }
-
-
 
     }
 
 
     //This function calculates distance between 2 vectors represented as two [2] arrays
-    private float distance(int[] v1, int[] v2){
+    private float distance(final int[] v1, final int[] v2){
         double xSquared = (int) Math.pow(v1[0] - v2[0], 2);
         double ySquared = (int) Math.pow(v1[1] - v2[1], 2);
         return (float) Math.sqrt(xSquared + ySquared);
     }
 
-    private float verticalDistance(int[] v1, int[] v2){
-        double ySquared = (int) Math.pow(v1[1] - v2[1], 2);
-        return (float) Math.sqrt(ySquared);
+    private float verticalDistance(final int[] v1, final int[] v2){
+        // Calling distance calculation function with 0 as x at each parameter
+        return distance(new int[]{0,v1[1]}, new int[]{0,v2[1]});
     }
 
     // Selected percent is a number between 0 and 1 - selected card should be the biggest and it will get 1.
@@ -138,7 +127,7 @@ class ScrollSnapper extends ScrollView
 
 
 
-    //Detecting user finishes scroll to perform snap to selected card
+    //Detecting user finishes scroll to perform snap to selected card (the closest one to top)
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt)
     {
@@ -162,7 +151,7 @@ class ScrollSnapper extends ScrollView
                         // ScrollView Stopped Scrolling and Finger is not on the ScrollView
                         targetSnapY = (int) currentSelected.getCard().getY();
                     }
-                    scrollTo(0, targetSnapY); //Auto Scrolling to the selected card
+                    scrollTo(0, targetSnapY); //Auto Scrolling to the selected card - performing snap
                     isSnapping = true;
                 }
                 else{
@@ -174,10 +163,13 @@ class ScrollSnapper extends ScrollView
 
     }
 
+
+    // Customising touch event to detect user behavior
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         this.event = event;
-        isSnapping = false;
+        isSnapping = false; //Snap would not be performed when there is a touch event
         return super.onTouchEvent(event);
     }
 
@@ -187,6 +179,29 @@ class ScrollSnapper extends ScrollView
     public boolean isSelectedViewFarEnough(){
         return (Math.abs(currentSelected.getCard().getY()-targetSnapY) > 2);
     }
+
+
+    // Is a view currently rendered on screen (as child of parent layout)
+    private boolean isVisible(final View view) {
+        if (view == null) {
+            return false;
+        }
+        if (!view.isShown()) {
+            return false;
+        }
+        final Rect actualPosition = new Rect();
+        view.getGlobalVisibleRect(actualPosition);
+        final Rect screen = new Rect(parent.getLeft(), parent.getTop(), parent.getWidth(),parent.getHeight());
+        return actualPosition.intersect(screen);
+    }
+
+
+
+    public RountCard getCurrentSelected() {
+        return currentSelected;
+    }
+
+
 }
 
 

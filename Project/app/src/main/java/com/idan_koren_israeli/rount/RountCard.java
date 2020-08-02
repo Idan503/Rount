@@ -24,6 +24,8 @@ public class RountCard {
     private final float MIN_CARD_MULTIPLIER = 0.8f;
     private final float MAX_STATS_TEXT_HEIGHT = 0.4f;
 
+    private final float NOT_SELECTED_CARD_ALPHA = 0.5f;
+
 
     private float selectedPercent; // between 0 (not selected) and 1 (selected and therefore the biggest)
 
@@ -96,7 +98,10 @@ public class RountCard {
         int[] currentSize = getCurrentCardSize(); //
         params.width = currentSize[0];
         params.height =  currentSize[1];
-        card.setLayoutParams(params);
+        card.setLayoutParams(params); // Updating the card sizes
+
+        //Not sure if this feature should be included
+        //card.setAlpha(Math.max(selectedPercent, NOT_SELECTED_CARD_ALPHA));
     }
 
 
