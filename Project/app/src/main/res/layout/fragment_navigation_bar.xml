@@ -1,14 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NavigationBar">
+    >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!-- Using an inner layout to be able to apply margin bottom
+    in order to show only the top part of this layout on screen when inflated -->
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="130dp"
+        android:layout_marginBottom="-50dp"
+        android:baselineAligned="false"
+        android:weightSum="4"
+        android:background="@drawable/navigation_bar_background"
+        android:orientation="horizontal"
+        >
 
-</FrameLayout>
+
+    <!-- Icons will be generated on runtime -->
+    <include
+        android:id="@+id/icon_home"
+        layout="@layout/navigation_icon_home"
+        android:onClick="changeActivity" />
+
+    <include
+        android:id="@+id/icon_create"
+        layout="@layout/navigation_icon_create"
+        android:onClick="changeActivity" />
+
+    <include
+        android:id="@+id/icon_statistics"
+        layout="@layout/navigation_icon_statistics"
+        android:onClick="changeActivity" />
+
+    <include
+        android:id="@+id/icon_settings"
+        layout="@layout/navigation_icon_settings"
+        android:onClick="changeActivity" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

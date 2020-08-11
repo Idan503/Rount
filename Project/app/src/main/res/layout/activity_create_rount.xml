@@ -1,9 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateRount" />
+    android:weightSum="2"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/text_background"
+        android:elevation="1dp"
+        android:text="@string/create_rount_title"
+        android:textColor="@android:color/white"
+        android:autoSizeTextType="uniform"
+        android:id="@+id/create_title"
+        android:padding="15dp"
+        android:gravity="center"
+        android:textAllCaps="true"
+        android:layout_marginTop="80dp"
+        />
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/create_title"
+        android:layout_above="@id/create_navigation_bar_fragment"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="30dp"
+        android:name="com.idan_koren_israeli.rount.CreateRountInput"
+        android:id="@+id/create_input_fragment" />
+
+
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_navigation_bar_fragment"
+        android:layout_alignParentBottom="true"
+        class="com.idan_koren_israeli.rount.NavigationBar"
+        />
+
+    <!--
+        <fragment
+            android:id="@+id/create_rount_map_fragment"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            tools:context=".CreateRount" />
+
+
+        <fragment
+            android:id="@+id/create_rount_streetview_fragment"
+            android:name="com.google.android.gms.maps.SupportStreetViewPanoramaFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            tools:context=".CreateRount" />
+
+    -->
+
+
+</RelativeLayout>

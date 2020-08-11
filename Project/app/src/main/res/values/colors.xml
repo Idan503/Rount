@@ -8,7 +8,10 @@
     <color name="backgroundDark">#2B2B2B</color>
 
 
-    <!--Pink Layout-->
+    <!-- Create Rount Screen -->
+    <color name="text_background">#CC000000</color>
+
+    <!-- Pink Layout -->
     <color name="primaryPink">#FF4242</color>
     <color name="primaryPinkLight">#FBA39E</color>
     <color name="secondaryPinkLight">#E7E6EC</color>

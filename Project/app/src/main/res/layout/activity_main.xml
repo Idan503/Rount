@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     tools:context=".MainActivity">
     <!-- Using relative layout to place navigation bar at bottom -->
 
@@ -22,14 +21,16 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.3"
+        android:id="@+id/start_layout_button"
+        android:clickable="true"
+        android:focusable="true"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="70dp"
         android:layout_marginRight="30dp">
 
-        <Button
+        <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/start_button"
             android:background="@drawable/start_button_background"
             android:elevation="1dp" />
 
@@ -131,9 +132,16 @@
     </LinearLayout>
 
     </LinearLayout>
+
     <!--Reusing the same navigation bar in each activity layout -->
-    <include
-        android:id="@+id/navigate_layout"
-        layout="@layout/navigation_bar" />
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.idan_koren_israeli.rount.NavigationBar"
+        android:id="@+id/main_navigation_bar_fragment"
+        android:layout_alignParentBottom="true"
+        />
+
+
 
 </RelativeLayout>
